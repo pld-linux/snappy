@@ -8,6 +8,7 @@ Group:		Libraries
 #Source0Download: http://code.google.com/p/snappy/downloads/list
 Source0:	http://snappy.googlecode.com/files/%{name}-%{version}.tar.gz
 # Source0-md5:	4c0af044e654f5983f4acbf00d1ac236
+Patch0:		%{name}-automake_1_12.patch
 URL:		http://code.google.com/p/snappy/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -88,6 +89,7 @@ Statyczna biblioteka Snappy.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
