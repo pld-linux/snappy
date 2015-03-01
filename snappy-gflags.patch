@@ -1,0 +1,11 @@
+--- snappy-1.1.2/snappy-test.h.orig	1980-01-01 00:00:00.000000000 +0100
++++ snappy-1.1.2/snappy-test.h	2015-03-01 19:53:47.391152000 +0100
+@@ -89,7 +89,7 @@
+ // though, so we call it first and hope for the best.
+ #define InitGoogle(argv0, argc, argv, remove_flags) \
+   INIT_GTEST(argc, argv); \
+-  google::ParseCommandLineFlags(argc, argv, remove_flags);
++  gflags::ParseCommandLineFlags(argc, argv, remove_flags);
+ 
+ #else
+ 

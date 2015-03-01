@@ -8,13 +8,15 @@ Group:		Libraries
 # Temporary download link for Snappy 1.1.2: https://drive.google.com/file/d/0B0xs9kK-b5nMOWIxWGJhMXd6aGs/edit?usp=sharing
 Source0:	%{name}-%{version}.tar.gz
 # Source0-md5:	c9593f61693ca929777302324721cb94
+Patch0:		%{name}-gflags.patch
 URL:		http://code.google.com/p/snappy/
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
+# for tests
+BuildRequires:	gflags-devel
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:2.0
 BuildRequires:	pkgconfig
-BuildConflicts:	gflags-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -89,6 +91,7 @@ Statyczna biblioteka Snappy.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
