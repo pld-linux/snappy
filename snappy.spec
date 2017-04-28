@@ -1,14 +1,13 @@
 Summary:	Snappy - fast compression/decompression library
 Summary(pl.UTF-8):	Snappy - biblioteka do szybkiej kompresji i dekompresji
 Name:		snappy
-Version:	1.1.3
+Version:	1.1.4
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/snappy/releases
-# Temporary download link for Snappy 1.1.2: https://drive.google.com/file/d/0B0xs9kK-b5nMOWIxWGJhMXd6aGs/edit?usp=sharing
 Source0:	https://github.com/google/snappy/releases/download/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	7358c82f133dc77798e4c2062a749b73
+# Source0-md5:	c328993b68afe3e5bd87c8ea9bdeb028
 Patch0:		%{name}-gflags.patch
 URL:		http://google.github.io/snappy/
 BuildRequires:	autoconf >= 2.50
@@ -109,6 +108,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libsnappy.la
+
 # already as %doc
 %{__rm} -r $RPM_BUILD_ROOT%{_docdir}/snappy
 
@@ -127,8 +129,8 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libsnappy.so
-%{_libdir}/libsnappy.la
 %{_includedir}/snappy*.h
+%{_pkgconfigdir}/snappy.pc
 
 %files static
 %defattr(644,root,root,755)
