@@ -1,22 +1,32 @@
+#
+# Conditional build:
+%bcond_without	tests		# unit tests
+%bcond_without	static_libs	# static library
+
 Summary:	Snappy - fast compression/decompression library
 Summary(pl.UTF-8):	Snappy - biblioteka do szybkiej kompresji i dekompresji
 Name:		snappy
-Version:	1.1.6
+Version:	1.1.7
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/snappy/releases
 Source0:	https://github.com/google/snappy/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	34bc3707dea702f684a5b8a3649a1721
+# Source0-md5:	ee9086291c9ae8deb4dac5e0b85bf54a
+Source1:	%{name}.pc.in
 Patch0:		%{name}-gflags.patch
+Patch1:		%{name}-gtest.patch
 URL:		http://google.github.io/snappy/
-BuildRequires:	autoconf >= 2.50
-BuildRequires:	automake
-# for tests
-BuildRequires:	gflags-devel
+BuildRequires:	cmake >= 3.1
 BuildRequires:	libstdc++-devel
 BuildRequires:	libtool >= 2:2.0
 BuildRequires:	pkgconfig
+%if %{with tests}
+BuildRequires:	gflags-devel
+BuildRequires:	gtest-devel
+BuildRequires:	lzo-devel >= 2
+BuildRequires:	zlib-devel
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -92,31 +102,43 @@ Statyczna biblioteka Snappy.
 %prep
 %setup -q
 %patch0 -p1
-
-# missing in non-dist tarballs
-test -f INSTALL || touch INSTALL
-test -f README || touch README
+%patch1 -p1
 
 %build
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoconf}
-%{__autoheader}
-%{__automake}
-%configure
+%if %{with static_libs}
+install -d build-static
+cd build-static
+%cmake .. \
+	-DBUILD_SHARED_LIBS=OFF \
+	%{!?with_tests:-DSNAPPY_BUILD_TESTS=OFF}
+cd ..
+%endif
+
+install -d build
+cd build
+%cmake .. \
+	%{!?with_tests:-DSNAPPY_BUILD_TESTS=OFF}
+
 %{__make}
+
+%{?with_tests:ctest}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
+%if %{with static_libs}
+# static first so that packaged cmake config files refer to shared library
+%{__make} -C build-static install \
+	DESTDIR=$RPM_BUILD_ROOT
+%endif
+
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# obsoleted by pkg-config
-%{__rm} $RPM_BUILD_ROOT%{_libdir}/libsnappy.la
-
-# already as %doc
-%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/snappy
+# ugh, they removed autotools support together with .pc file :/
+install -d $RPM_BUILD_ROOT%{_pkgconfigdir}
+sed -e 's,@prefix@,%{_prefix},g;s,@libdir@,%{_libdir},g;s,@version@,%{version},g' \
+	%{SOURCE1} > $RPM_BUILD_ROOT%{_pkgconfigdir}/snappy.pc
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -126,7 +148,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING ChangeLog NEWS README
+%doc AUTHORS COPYING NEWS README.md
 %attr(755,root,root) %{_libdir}/libsnappy.so.*.*.*
 %attr(755,root,root) %ghost %{_libdir}/libsnappy.so.1
 
@@ -135,7 +157,10 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/libsnappy.so
 %{_includedir}/snappy*.h
 %{_pkgconfigdir}/snappy.pc
+%{_libdir}/cmake/Snappy
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libsnappy.a
+%endif

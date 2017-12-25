@@ -1,0 +1,11 @@
+--- snappy-1.1.7/CMakeLists.txt.orig	2017-08-25 01:54:23.000000000 +0200
++++ snappy-1.1.7/CMakeLists.txt	2017-12-24 14:32:18.896409605 +0100
+@@ -118,7 +118,7 @@
+       "${PROJECT_SOURCE_DIR}/snappy-test.cc"
+   )
+   target_compile_definitions(snappy_unittest PRIVATE -DHAVE_CONFIG_H)
+-  target_link_libraries(snappy_unittest snappy ${GFLAGS_LIBRARIES})
++  target_link_libraries(snappy_unittest snappy ${GFLAGS_LIBRARIES} ${GTEST_LIBRARIES})
+ 
+   if(HAVE_LIBZ)
+     target_link_libraries(snappy_unittest z)
