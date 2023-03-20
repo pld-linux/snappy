@@ -6,20 +6,18 @@
 Summary:	Snappy - fast compression/decompression library
 Summary(pl.UTF-8):	Snappy - biblioteka do szybkiej kompresji i dekompresji
 Name:		snappy
-Version:	1.1.9
+Version:	1.1.10
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/snappy/releases
 Source0:	https://github.com/google/snappy/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	213b6324b7790d25f5368629540a172c
+# Source0-md5:	70153395ebe6d72febe2cf2e40026a44
 Source1:	%{name}.pc.in
 Patch0:		%{name}-gtest.patch
-Patch1:		%{name}-inline.patch
 URL:		http://google.github.io/snappy/
 BuildRequires:	cmake >= 3.1
-BuildRequires:	libstdc++-devel
-BuildRequires:	libtool >= 2:2.0
+BuildRequires:	libstdc++-devel >= 6:5
 BuildRequires:	pkgconfig
 %if %{with tests}
 BuildRequires:	gtest-devel
@@ -101,7 +99,6 @@ Statyczna biblioteka Snappy.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %if %{with static_libs}
@@ -109,6 +106,7 @@ install -d build-static
 cd build-static
 %cmake .. \
 	-DBUILD_SHARED_LIBS=OFF \
+	-DCMAKE_CXX_STANDARD=14 \
 	-DSNAPPY_BUILD_BENCHMARKS=OFF \
 	%{!?with_tests:-DSNAPPY_BUILD_TESTS=OFF}
 
@@ -119,6 +117,7 @@ cd ..
 install -d build
 cd build
 %cmake .. \
+	-DCMAKE_CXX_STANDARD=14 \
 	-DSNAPPY_BUILD_BENCHMARKS=OFF \
 	%{!?with_tests:-DSNAPPY_BUILD_TESTS=OFF}
 
