@@ -1,6 +1,6 @@
---- snappy-1.1.9/CMakeLists.txt.orig	2021-05-05 00:53:34.000000000 +0200
-+++ snappy-1.1.9/CMakeLists.txt	2022-02-14 16:29:44.015674683 +0100
-@@ -286,20 +286,6 @@ if(SNAPPY_BUILD_TESTS)
+--- snappy-1.2.1/CMakeLists.txt.orig	2024-05-21 21:36:39.000000000 +0200
++++ snappy-1.2.1/CMakeLists.txt	2024-05-26 21:51:23.464722018 +0200
+@@ -321,25 +321,6 @@ if(SNAPPY_BUILD_TESTS)
  
    # Prevent overriding the parent project's compiler/linker settings on Windows.
    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
@@ -18,10 +18,15 @@
 -    set_property(TARGET gmock
 -        APPEND PROPERTY COMPILE_OPTIONS -Wno-missing-field-initializers)
 -  endif(SNAPPY_HAVE_NO_MISSING_FIELD_INITIALIZERS)
+-
+-  if(SNAPPY_HAVE_NO_IMPLICIT_INT_FLOAT_CONVERSION)
+-    set_property(TARGET gtest
+-        APPEND PROPERTY COMPILE_OPTIONS -Wno-implicit-int-float-conversion)
+-  endif(SNAPPY_HAVE_NO_IMPLICIT_INT_FLOAT_CONVERSION)
  
    add_executable(snappy_unittest "")
    target_sources(snappy_unittest
-@@ -328,11 +314,6 @@ if(SNAPPY_BUILD_BENCHMARKS)
+@@ -368,11 +349,6 @@ if(SNAPPY_BUILD_BENCHMARKS)
        "snappy_benchmark.cc"
    )
    target_link_libraries(snappy_benchmark snappy_test_support benchmark_main)

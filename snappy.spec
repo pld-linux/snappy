@@ -6,13 +6,13 @@
 Summary:	Snappy - fast compression/decompression library
 Summary(pl.UTF-8):	Snappy - biblioteka do szybkiej kompresji i dekompresji
 Name:		snappy
-Version:	1.1.10
+Version:	1.2.1
 Release:	1
 License:	BSD
 Group:		Libraries
 #Source0Download: https://github.com/google/snappy/releases
 Source0:	https://github.com/google/snappy/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	70153395ebe6d72febe2cf2e40026a44
+# Source0-md5:	dd6f9b667e69491e1dbf7419bdf68823
 Source1:	%{name}.pc.in
 Patch0:		%{name}-gtest.patch
 URL:		http://google.github.io/snappy/
