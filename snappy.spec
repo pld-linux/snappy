@@ -19,6 +19,7 @@ URL:		http://google.github.io/snappy/
 BuildRequires:	cmake >= 3.1
 BuildRequires:	libstdc++-devel >= 6:5
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.605
 %if %{with tests}
 BuildRequires:	gtest-devel
 BuildRequires:	lzo-devel >= 2
