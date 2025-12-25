@@ -17,7 +17,7 @@ Source1:	%{name}.pc.in
 Patch0:		%{name}-gtest.patch
 URL:		http://google.github.io/snappy/
 BuildRequires:	cmake >= 3.10
-BuildRequires:	libstdc++-devel >= 6:5
+BuildRequires:	libstdc++-devel >= 6:7
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.605
 %if %{with tests}
@@ -107,7 +107,7 @@ install -d build-static
 cd build-static
 %cmake .. \
 	-DBUILD_SHARED_LIBS=OFF \
-	-DCMAKE_CXX_STANDARD=14 \
+	-DCMAKE_CXX_STANDARD=17 \
 	-DSNAPPY_BUILD_BENCHMARKS=OFF \
 	%{!?with_tests:-DSNAPPY_BUILD_TESTS=OFF}
 
@@ -118,7 +118,7 @@ cd ..
 install -d build
 cd build
 %cmake .. \
-	-DCMAKE_CXX_STANDARD=14 \
+	-DCMAKE_CXX_STANDARD=17 \
 	-DSNAPPY_BUILD_BENCHMARKS=OFF \
 	%{!?with_tests:-DSNAPPY_BUILD_TESTS=OFF}
 
