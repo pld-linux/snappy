@@ -152,12 +152,12 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS COPYING NEWS README.md
-%attr(755,root,root) %{_libdir}/libsnappy.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libsnappy.so.1
+%{_libdir}/libsnappy.so.*.*.*
+%ghost %{_libdir}/libsnappy.so.1
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libsnappy.so
+%{_libdir}/libsnappy.so
 %{_includedir}/snappy*.h
 %{_pkgconfigdir}/snappy.pc
 %{_libdir}/cmake/Snappy
